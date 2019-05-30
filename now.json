@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@now/static" },
+    { "src": "front-light.js", "use": "@now/node" },
+    { "src": "sun-event.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/front-light/(?<state>on|off)", "dest": "/front-light.js?state=$state" },
+    { "src": "/sun-event", "dest": "/sun-event.js" }
+  ],
+  "env": {
+    "API_KEY": "@api-key",
+    "TPLINK_TOKEN": "@tplink-token",
+    "DEVICE_ID": "@device-id"
+  }
+}
