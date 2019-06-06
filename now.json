@@ -1,13 +1,19 @@
 {
   "version": 2,
   "builds": [
-    { "src": "index.html", "use": "@now/static" },
-    { "src": "front-light.js", "use": "@now/node" },
-    { "src": "sun-event.js", "use": "@now/node" }
+    { "src": "assets/styles.css", "use": "@now/static" },
+    { "src": "pages/*.html", "use": "@now/static" },
+    { "src": "pages/*.js", "use": "@now/node" },
+    { "src": "api/*", "use": "@now/node" }
   ],
   "routes": [
-    { "src": "/front-light/(?<state>on|off)", "dest": "/front-light.js?state=$state" },
-    { "src": "/sun-event", "dest": "/sun-event.js" }
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/api/sun-event", "dest": "/api/sun-event.js", "methods": ["POST"] },
+    { "src": "/api/get-devices", "dest": "/api/get-devices.js", "methods": ["POST"] },
+    { "src": "/api/get-device/(?<device>[^/]+)", "dest": "/api/get-device.js?deviceId=$device", "methods": ["POST"] },
+    { "src": "/api/set-relay-state/(?<device>[^/]+)/(?<state>on|off)", "dest": "/api/set-relay-state.js?deviceId=$device&state=$state", "methods": ["POST"] },
+    { "src": "/", "dest": "/pages/index.html" },
+    { "src": "/home", "dest": "/pages/home.js" }
   ],
   "env": {
     "API_KEY": "@api-key",

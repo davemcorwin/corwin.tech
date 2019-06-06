@@ -1,5 +1,7 @@
-const sunApi = require('./sun-api');
-const { getLightState, setLightState } = require('./tplink-api');
+const sunApi = require('../lib/sun-api');
+const { getRelayState, setRelayState } = require('../lib/tplink-api');
+
+const { DEVICE_ID } = process.env;
 
 const SCHEDULE = [
   ['00:01', 'off'],
@@ -33,7 +35,7 @@ module.exports = async (req, res) => {
   log.currentTime = currentTime;
 
   const [currentState, sunData] = await Promise.all([
-    getLightState(),
+    getRelayState(DEVICE_ID),
     sunApi(currentDate).then(({ sunrise, sunset }) => ({
       sunrise: timeFormat.format(new Date(sunrise)),
       sunset: timeFormat.format(new Date(sunset)),
@@ -56,7 +58,7 @@ module.exports = async (req, res) => {
     log.item = item;
     const lightState = item[1];
     if (lightState !== currentState) {
-      await setLightState(lightState);
+      await setRelayState(DEVICE_ID, lightState);
       message = `Front light turned ${lightState}!`;
     }
   }
