@@ -1,8 +1,17 @@
-const { parse } = require('url');
+const cookieParser = require('cookie-parser');
+const csrf = require('csurf');
+const express = require('express');
 const { setRelayState } = require('../lib/tplink-api');
 
-module.exports = async (req, res) => {
-  const { deviceId, state } = parse(req.url, true).query;
+const app = express();
+
+app.use(cookieParser());
+app.use(csrf({ cookie: true }));
+
+app.post('*', async (req, res) => {
+  const { deviceId, state } = req.query;
   await setRelayState(deviceId, state);
-  res.end(`Success!`);
-};
+  res.send(`Success!`);
+});
+
+module.exports = app;

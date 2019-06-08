@@ -15,7 +15,6 @@
   "env": {
     "API_KEY": "@api-key",
     "TPLINK_TOKEN": "@tplink-token",
-    "DEVICE_ID": "@device-id",
     "USER": "@user",
     "PASS": "@pass"
   }

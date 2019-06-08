@@ -1,18 +1,37 @@
-const auth = require('basic-auth');
+const cookieParser = require('cookie-parser');
+const csrf = require('csurf');
+const express = require('express');
+const basicAuth = require('express-basic-auth');
+const helmet = require('helmet');
 const { getDevice, getDevices } = require('../lib/tplink-api');
 const template = require('../templates/home');
 
 const { USER, PASS } = process.env;
 
-module.exports = async (req, res) => {
-  const user = auth(req);
+const app = express();
 
-  if (!user || user.name !== USER || user.pass !== PASS) {
-    res.statusCode = 401;
-    res.setHeader('WWW-Authenticate', 'Basic realm="Corwin.tech"');
-    return res.end('Access denied');
-  }
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+      },
+    },
+  })
+);
+app.use(
+  basicAuth({
+    users: { [USER]: PASS },
+    challenge: true,
+    realm: 'Corwin.tech',
+  })
+);
+app.use(cookieParser());
+app.use(csrf({ cookie: true }));
 
+app.get('*', async (req, res) => {
   const deviceSummaries = await getDevices();
   const devices = await Promise.all(
     deviceSummaries.map(deviceSummary =>
@@ -24,5 +43,8 @@ module.exports = async (req, res) => {
         })
     )
   );
-  res.end(template({ devices }));
-};
+
+  res.send(template({ csrfToken: req.csrfToken(), devices }));
+});
+
+module.exports = app;

@@ -15,13 +15,14 @@ const switchHtml = device => `
   </label>
 `;
 
-module.exports = ({ devices }) => `
+module.exports = ({ csrfToken, devices }) => `
   <html lang="en-US">
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>Home</title>
       <link rel="stylesheet" type="text/css" href="/assets/styles.css" />
+      <meta name="csrf-token" content="${csrfToken}" />
     </head>
     <body>
       <main>
@@ -30,18 +31,7 @@ module.exports = ({ devices }) => `
           ${devices.map(switchHtml).join('')}
         </form>
       </main>
-      <script>
-        const form = document.forms[0];
-        form.addEventListener('change', event => {
-          const url = [
-            '/api/set-relay-state/',
-            event.target.dataset.deviceId,
-            '/',
-            event.target.checked ? 'on' : 'off'
-          ].join('');
-          fetch(url, { method: 'POST' });
-        });
-      </script>        
+      <script type="text/javascript" src="/assets/relay-state.js"/></script>        
     </body>
   </html>
 `;
