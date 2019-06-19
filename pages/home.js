@@ -44,6 +44,7 @@ app.get('*', async (req, res) => {
     )
   );
 
+  res.set('Content-Type', 'text/html');
   res.send(template({ csrfToken: req.csrfToken(), devices }));
 });
 
