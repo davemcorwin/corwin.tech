@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
     "helmet": "^3.18.0",
+    "mailgun-js": "^0.22.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
   }

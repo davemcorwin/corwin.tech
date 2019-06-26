@@ -19,6 +19,8 @@
     "API_KEY": "@api-key",
     "TPLINK_TOKEN": "@tplink-token",
     "USER": "@user",
-    "PASS": "@pass"
+    "PASS": "@pass",
+    "MAILGUN_API_KEY": "@mailgun-api-key",
+    "MAILGUN_DOMAIN": "@mailgun-domain"
   }
 }
