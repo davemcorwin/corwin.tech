@@ -11,6 +11,7 @@
     { "src": "/api/set-relay-state/(?<device>[^/]+)/(?<state>on|off)", "dest": "/api/set-relay-state.js?deviceId=$device&state=$state", "methods": ["POST"] },
     { "src": "/", "dest": "/pages/index.html" },
     { "src": "/home", "dest": "/pages/home.js" },
+    { "src": "/cinnamon-rolls", "dest": "/pages/cinnamon-rolls.html" },
     { "src": "/(.*).png", "dest": "/assets/$1.png" },
     { "src": "/favicon.ico", "dest": "/assets/favicon.ico" },
     { "src": "/site.webmanifest", "dest": "/assets/site.webmanifest" }
